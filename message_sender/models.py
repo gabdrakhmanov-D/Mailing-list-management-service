@@ -81,7 +81,7 @@ class MailingAttempt(models.Model):
 
     date = models.DateTimeField(verbose_name='Дата и время попытки')
 
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=14, choices=STATUS_CHOICES)
 
     mail_server_response = models.TextField(blank=False,
                                             null=False,
