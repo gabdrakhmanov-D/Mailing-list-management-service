@@ -1,21 +1,13 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Главная{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <script defer src="/static/js/bootstrap.bundle.min.js"></script>
-</head>
-<body class="bg-info-subtle">
+{% extends 'message_sender/base.html' %}
 
-      <div class="position-absolute top-50 start-50 translate-middle">
-        <div class="btn-group-vertical" role="group" aria-label="Группа вертикальных кнопок">
-            <button type="button" class="btn btn-primary btn-lg">Управление клиентами</button>
-            <button type="button" class="btn btn-primary btn-lg mt-2">Управление сообщениями</button>
-            <button type="button" class="btn btn-primary btn-lg mt-2">Управление рассылками</button>
-        </div>
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<div class="position-absolute top-50 start-50 translate-middle">
+    <div class="btn-group-vertical" role="group" aria-label="Группа вертикальных кнопок">
+        <a href="{% url 'sender:recipients' %}" class="btn btn-primary">Управление клиентами</a>
+        <button type="button" class="btn btn-primary btn-lg mt-2">Управление сообщениями</button>
+        <button type="button" class="btn btn-primary btn-lg mt-2">Управление рассылками</button>
     </div>
-
-</body>
-</html>
+</div>
+{% endblock %}

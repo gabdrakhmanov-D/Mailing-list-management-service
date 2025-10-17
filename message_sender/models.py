@@ -14,8 +14,8 @@ class MailingRecipient(models.Model):
                                 null=False,
                                 verbose_name="Ф. И. О.")
 
-    comment = models.TextField(blank=False,
-                               null=False,
+    comment = models.TextField(blank=True,
+                               null=True,
                                verbose_name="Комментарий")
 
     def __str__(self):
