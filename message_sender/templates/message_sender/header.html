@@ -1,7 +1,11 @@
 <header>
     <div class="row justify-content-center">
         <div class="btn-group" role="group">
+            {% if recipients %}
             <a href="{% url 'sender:add_recipient' %}" class="btn btn-primary">Добавить получателя</a>
+            {% elif messages %}
+            <a href="{% url 'sender:add_message' %}" class="btn btn-primary">Добавить рассылку</a>
+            {% endif %}
             <a href="{% url 'sender:home' %}" class="btn btn-primary">На главную</a>
         </div>
     </div>

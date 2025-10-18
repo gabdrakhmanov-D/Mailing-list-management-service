@@ -1,5 +1,5 @@
 from django.urls import path
-from views import *
+from message_sender.views import *
 
 app_name = 'catalog'
 
