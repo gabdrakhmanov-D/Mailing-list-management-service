@@ -1,4 +1,5 @@
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.http import HttpResponseRedirect
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, BaseDeleteView, DeletionMixin
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView
 from .models import MailingRecipient
@@ -12,7 +13,7 @@ class HomeView(TemplateView):
 class RecipientCreate(CreateView):
     model = MailingRecipient
     fields = ['email', 'fullname', 'comment']
-    template_name = 'message_sender/add_recipient.html'
+    template_name = 'message_sender/recipient_form.html'
     success_url = reverse_lazy('sender:recipients')
 
 
@@ -25,11 +26,11 @@ class RecipientsListView(ListView):
 class RecipientUpdateView(UpdateView):
     model = MailingRecipient
     fields = ['email', 'fullname', 'comment']
-    template_name = 'message_sender/edit_recipient.html'
+    template_name = 'message_sender/recipient_form.html'
     success_url = reverse_lazy('recipients')
 
 
 class RecipientDeleteView(DeleteView):
     model = MailingRecipient
     template_name = 'message_sender/recipient_confirm_delete.html'
-    success_url = reverse_lazy('recipients')
+    success_url = reverse_lazy('sender:recipients')
