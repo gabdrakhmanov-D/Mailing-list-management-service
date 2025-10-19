@@ -1,7 +1,7 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView
-from .models import MailingRecipient, Message
+from .models import MailingRecipient, Message, Mailing
 
 
 # Create your views here.
@@ -61,3 +61,37 @@ class MessagesDeleteView(DeleteView):
     model = Message
     template_name = 'message_sender/message_confirm_delete.html'
     success_url = reverse_lazy('sender:messages')
+
+
+class MailingCreate(CreateView):
+    model = Mailing
+    fields = ['start_date',
+              'end_date',
+              'status',
+              'message',
+              'recipients',]
+    template_name = 'message_sender/mailing_form.html'
+    success_url = reverse_lazy('sender:mailing')
+
+
+class MailingListView(ListView):
+    model = Mailing
+    template_name = 'message_sender/mailing_list.html'
+    context_object_name = 'mailing'
+
+
+class MailingUpdateView(UpdateView):
+    model = Mailing
+    fields = ['start_date',
+              'end_date',
+              'status',
+              'message',
+              'recipients', ]
+    template_name = 'message_sender/mailing_form.html'
+    success_url = reverse_lazy('sender:mailing')
+
+
+class MailingDeleteView(DeleteView):
+    model = Mailing
+    template_name = 'message_sender/mailing_confirm_delete.html'
+    success_url = reverse_lazy('sender:mailing')
