@@ -1,0 +1,50 @@
+{% extends 'message_sender/base.html' %}
+
+{% block title %}
+{% if object %}
+Редактировать рассылку
+{% else %}
+Создать рассылку
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% include 'message_sender/header.html' %}
+
+<form action="" method="POST"
+      class="position-absolute top-50 start-50 translate-middle border border-success rounded bg-warning-subtle"
+      style="width: 25%;">
+    {% csrf_token %}
+
+    <div class="mb-3 mt-3 px-4">
+        <label for="{{ form.start_date.id_for_label }}" class="form-label">{{ form.start_date.label }}</label>
+        <input type="text" class="form-control" id="{{ form.start_date.id_for_label }}"
+               name="{{ form.start_date.name }}"
+               value="{% if object %}{{ form.start_date.value }}{% endif %}"></div>
+    <div class="mb-3 mt-3 px-4">
+        <label for="{{ form.end_date.id_for_label }}" class="form-label">{{ form.end_date.label }}</label>
+        <input type="text" class="form-control" id="{{ form.end_date.id_for_label }}" name="{{ form.end_date.name }}"
+               value="{% if object %}{{ form.end_date.value }}{% endif %}"></div>
+    <div class="mb-3 mt-3 px-4">
+        <select class="form-select" required aria-label="select example">
+            <option value="">Статус</option>
+            <option value="{{form.completed.id}}">{{form.status.completed.value}}</option>
+            <option value="2">{{form.status.created}}</option>
+            <option value="3">{{form.status.running}}</option>
+        </select>
+        <div class="invalid-feedback">Пример обратной связи неверного выбора</div>
+    </div>
+    <div class="d-grid col-6 mx-auto">
+        <button type="submit" class="btn btn-success mb-2 px-4">
+            {% if object %}
+            Сохранить
+            {% else %}
+            Создать
+            {% endif %}
+        </button>
+        <a href="{% url 'sender:recipients' %}" class="btn btn-primary mb-2 px-4">Отмена</a>
+    </div>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'message_sender/base.html' %}
+
+{% block title %}Список получателей{% endblock %}
+
+{% block content %}
+{% include 'message_sender/header.html' %}
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Дата и время первой отправки</th>
+        <th scope="col">Дата и время окончания отправки</th>
+        <th scope="col">Статус рассылки</th>
+        <th scope="col">Сообщение</th>
+        <th scope="col">Получатели</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for mail in mailing %}
+    <tr>
+        <th scope="row">{{ mail.pk }}</th>
+        <td>{{ mail.start_date }}</td>
+        <td>{{ mail.end_date }}</td>
+        <td>{{ mail.message }}</td>
+        <td>{{ mail.recipients }}</td>
+        <td>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                Действие
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'sender:edit_mailing' message.pk %}">Редактировать</a></li>
+                <li><a class="dropdown-item " href="{% url 'sender:mailing_delete' message.pk %} " >Удалить</a></li>
+            </ul>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
