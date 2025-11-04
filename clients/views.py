@@ -8,25 +8,25 @@ from clients.models import MailingRecipient
 class RecipientCreate(CreateView):
     model = MailingRecipient
     fields = ['email', 'fullname', 'comment']
-    template_name = 'message_sender/recipient_form.html'
-    success_url = reverse_lazy('sender:recipients')
+    template_name = 'clients/recipient_form.html'
+    success_url = reverse_lazy('clients:recipients')
 
 
 class RecipientsListView(ListView):
     model = MailingRecipient
-    template_name = 'message_sender/recipient_list.html'
+    template_name = 'clients/recipient_list.html'
     context_object_name = 'recipients'
 
 
 class RecipientUpdateView(UpdateView):
     model = MailingRecipient
     fields = ['email', 'fullname', 'comment']
-    template_name = 'message_sender/recipient_form.html'
+    template_name = 'clients/recipient_form.html'
     success_url = reverse_lazy('recipients')
 
 
 class RecipientDeleteView(DeleteView):
     model = MailingRecipient
-    template_name = 'message_sender/recipient_confirm_delete.html'
-    success_url = reverse_lazy('sender:recipients')
+    template_name = 'clients/recipient_confirm_delete.html'
+    success_url = reverse_lazy('clients:recipients')
 
