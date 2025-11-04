@@ -6,7 +6,7 @@ class MailingRecipient(models.Model):
                              unique=True,
                              blank=False,
                              null=False,
-                             verbose_name="Получатель рассылки")
+                             verbose_name="Электронная почта получателя")
 
     fullname = models.CharField(max_length=250,
                                 blank=False,

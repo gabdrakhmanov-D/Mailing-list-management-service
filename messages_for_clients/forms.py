@@ -11,9 +11,3 @@ class MessageForm(UserSettingUpMix, forms.ModelForm):
         fields = ['subject_line',
                   'message',
                   ]
-
-    def __init__(self, *args, **kwargs):
-        super(MessageForm, self).__init__(*args, **kwargs)
-
-        for field, field_object in self.fields.items():
-            field_object.widget.attrs.update({'class': 'form-control'})

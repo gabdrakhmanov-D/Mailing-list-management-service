@@ -1,13 +1,14 @@
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
+from clients.forms import ClientsForm
 from clients.models import MailingRecipient
 
 
 # Create your views here.
 class RecipientCreate(CreateView):
     model = MailingRecipient
-    fields = ['email', 'fullname', 'comment']
+    form_class = ClientsForm
     template_name = 'clients/recipient_form.html'
     success_url = reverse_lazy('clients:recipients')
 
@@ -20,7 +21,7 @@ class RecipientsListView(ListView):
 
 class RecipientUpdateView(UpdateView):
     model = MailingRecipient
-    fields = ['email', 'fullname', 'comment']
+    form_class = ClientsForm
     template_name = 'clients/recipient_form.html'
     success_url = reverse_lazy('recipients')
 
