@@ -1,4 +1,4 @@
-{% extends 'catalog/base.html' %}
+{% extends 'users/base.html' %}
 
 {% block title %}Регистрация{% endblock %}
 
@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+{% include 'users\header.html' %}
 
 <form class="row g-3 position-relative py-2 px-4 text-bg-dark border rounded-2 mt-5 bg-secondary top-0 start-50 translate-middle-x"
       style="width: 50%" method="post" enctype="multipart/form-data">
