@@ -7,8 +7,15 @@ class UserSettingUpMix:
         for field_name, field_object in self.fields.items():
             if isinstance(field_object, BooleanField):
                 field_object.widget.attrs['class'] = 'form-chek-input'
+
             else:
                 field_object.widget.attrs['class'] = 'form-control'
+
+            if field_name == 'message':
+                field_object.widget.attrs.update({
+                    'cols': '5',
+                    'rows': '3'
+                })
 
 
     def settingup_fields(self, fields):

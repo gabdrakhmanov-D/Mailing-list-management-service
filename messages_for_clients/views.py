@@ -2,13 +2,14 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 
+from messages_for_clients.forms import MessageForm
 from messages_for_clients.models import Message
 
 
 # Create your views here.
 class MessageCreate(CreateView):
     model = Message
-    fields = ['subject_line', 'message',]
+    form_class = MessageForm
     template_name = 'messages_for_clients/message_form.html'
     success_url = reverse_lazy('messages:messages_list')
 
@@ -21,7 +22,7 @@ class MessagesListView(ListView):
 
 class MessageUpdateView(UpdateView):
     model = Message
-    fields = ['subject_line', 'message',]
+    form_class = MessageForm
     template_name = 'messages_for_clients/message_form.html'
     success_url = reverse_lazy('messages:messages_list')
 
