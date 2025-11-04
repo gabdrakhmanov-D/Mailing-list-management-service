@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'message_sender',
     'users',
     'clients',
+    'messages_for_clients',
 ]
 
 MIDDLEWARE = [

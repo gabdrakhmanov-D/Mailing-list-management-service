@@ -1,24 +1,7 @@
 from django.db import models
 
 from clients.models import MailingRecipient
-
-
-class Message(models.Model):
-
-    subject_line = models.CharField(max_length=250,
-                                    blank=False,
-                                    null=False,
-                                    verbose_name="Тема письма")
-
-    message = models.TextField(blank=False,
-                               null=False,
-                               verbose_name="Тело письма")
-    def __str__(self):
-        return f'{self.subject_line} {self.message}'
-
-    class Meta:
-        verbose_name = 'Сообщение'
-        verbose_name_plural = 'Сообщения'
+from messages_for_clients.models import Message
 
 
 class Mailing(models.Model):
