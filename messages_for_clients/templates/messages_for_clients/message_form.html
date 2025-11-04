@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-{% include 'message_sender/header.html' %}
+{% include 'users/header.html' %}
 
 <form action="" method="POST"
       class="position-absolute top-50 start-50 translate-middle border border-success rounded bg-warning-subtle"
@@ -32,7 +32,7 @@
             Создать
             {% endif %}
         </button>
-        <a href="{% url 'sender:messages' %}" class="btn btn-primary mb-2 px-4">Отмена</a>
+        <a href="{% url 'messages:messages_list' %}" class="btn btn-primary mb-2 px-4">Отмена</a>
     </div>
 
 </form>
