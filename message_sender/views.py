@@ -9,11 +9,7 @@ from .models import MailingRecipient, Message, Mailing
 # Create your views here.
 class MailingCreate(CreateView):
     model = Mailing
-    fields = ['start_date',
-              'end_date',
-              'status',
-              'message',
-              'recipients',]
+    form_class = MailingForm
     template_name = 'message_sender/mailing_form.html'
     success_url = reverse_lazy('sender:mailing')
 
