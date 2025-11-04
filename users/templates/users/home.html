@@ -2,10 +2,13 @@
 
 {% block title %}Главная{% endblock %}
 
-{% if user.is_authenticated %}
-{% include 'users\header.html' %}
+
 
 {% block content %}
+
+
+{% if user.is_authenticated %}
+{% include 'users\header.html' %}
 <div class="position-absolute top-50 start-50 translate-middle">
     <div class="btn-group-vertical" role="group" aria-label="Группа вертикальных кнопок">
         <a href="{% url 'sender:recipients' %}" class="btn btn-primary">Управление клиентами</a>
@@ -13,29 +16,21 @@
         <a href="{% url 'sender:messages' %}" class="btn btn-primary">Управление сообщениями</a>
         <p></p>
         <a href="{% url 'sender:mailing' %}" class="btn btn-primary">Управление рассылками</a>
+
     </div>
+
 </div>
 
-{% endblock %}
-
 {% else %}
+
 <div class="position-absolute top-50 start-50 translate-middle">
-<button class="btn text-light dropdown-toggle fs-5" type="button"
-        id="dropdownMenuButton2"
-        data-bs-toggle="dropdown" aria-expanded="false">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-         class="bi bi-person-fill" viewBox="0 0 16 16">
-        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-    </svg>
-    Профиль
-</button>
-<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-    <li class="nav-item">
-        <a class="dropdown-item border-outline-success" aria-current="page"
+    <div class="btn-group-vertical" role="group" aria-label="Группа вертикальных кнопок">
+        <a class="btn btn-primary" aria-current="page"
            href="{% url 'users:login'%}">Войти</a>
-    <li class="nav-item">
-        <a class="dropdown-item" aria-current="page"
+        <p></p>
+        <a class="btn btn-primary" aria-current="page"
            href="{% url 'users:register'%}">Регистрация</a>
-</ul>
+
     </div>
-{% endif%}
+    {% endif%}
+    {% endblock %}
