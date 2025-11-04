@@ -3,7 +3,7 @@
 {% block title %}Список получателей{% endblock %}
 
 {% block content %}
-{% include 'message_sender/header.html' %}
+{% include 'users/header.html' %}
 <table class="table">
     <thead>
     <tr>
@@ -26,8 +26,8 @@
                 Действие
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'sender:edit_recipient' recipient.pk %}">Редактировать</a></li>
-                <li><a class="dropdown-item" href="{% url 'sender:recipient_delete' recipient.pk %}" >Удалить</a></li>
+                <li><a class="dropdown-item" href="{% url 'clients:edit_recipient' recipient.pk %}">Редактировать</a></li>
+                <li><a class="dropdown-item" href="{% url 'clients:recipient_delete' recipient.pk %}" >Удалить</a></li>
             </ul>
         </td>
     </tr>

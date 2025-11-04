@@ -10,7 +10,15 @@
             <a class="btn btn-primary" href="{% url 'users:home' %}">На
                 главную</a>
         </div>
-        <div class="col-3 d-grid pt-1"></div>
+        <div class="col-3 d-grid pt-1">
+             {% if recipients %}
+                <a href="{% url 'sender:add_recipient' %}" class="btn btn-success">Добавить получателя</a>
+                {% elif messages %}
+                <a href="{% url 'sender:add_message' %}" class="btn btn-primary">Добавить сообщение</a>
+                {% else %}
+                <a href="{% url 'sender:add_mailing' %}" class="btn btn-success">Добавить рассылку</a>
+                {% endif %}
+        </div>
         <div class="col-3 d-grid pt-1 d-flex justify-content-end align-items-center">
             <form method="post" action="{% url 'users:logout'%}" style="display: inline">
                 {% csrf_token %}
