@@ -1,10 +1,14 @@
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, TemplateView
 
 from users.forms import UserRegisterForm, UserSettingUpLoginForm, UserSettingUpProfile
 from users.models import User
+
+
+class HomeView(TemplateView):
+    template_name = 'users/home.html'
 
 
 class RegisterView(CreateView):

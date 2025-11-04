@@ -1,14 +1,12 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView
+
+from .forms import MailingForm
 from .models import MailingRecipient, Message, Mailing
 
 
 # Create your views here.
-
-
-class HomeView(TemplateView):
-    template_name = 'message_sender/home.html'
 
 
 class RecipientCreate(CreateView):
@@ -82,11 +80,7 @@ class MailingListView(ListView):
 
 class MailingUpdateView(UpdateView):
     model = Mailing
-    fields = ['start_date',
-              'end_date',
-              'status',
-              'message',
-              'recipients', ]
+    form_class = MailingForm
     template_name = 'message_sender/mailing_form.html'
     success_url = reverse_lazy('sender:mailing')
 

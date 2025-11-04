@@ -1,0 +1,21 @@
+<header>
+    <button class="btn text-light dropdown-toggle fs-5" type="button"
+                            id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-person-fill" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                        </svg>
+                        {{user.first_name}} {{user.last_name}}
+                    </button>
+    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'users:logout'%}" style="display: inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger dropdown-item">Выйти</button>
+                            </form>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'users:profile' user.pk%}">Профиль</a></li>
+                    </ul>
+</header>
