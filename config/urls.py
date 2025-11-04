@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('message_sender.urls', namespace='sender')),
     path('', include('users.urls', namespace='user')),
     path('', include('clients.urls', namespace='clients')),
+    path('', include('messages_for_clients.urls', namespace='messages')),
 ]
 
 if settings.DEBUG:
