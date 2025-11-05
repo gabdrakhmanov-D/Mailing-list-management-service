@@ -8,6 +8,5 @@ class MailingForm(UserSettingUpMix, forms.ModelForm):
 
     class Meta:
         model = Mailing
-        fields = ['status',
-                  'message',
+        fields = ['message',
                   'recipients',]
