@@ -23,14 +23,17 @@
         <td>{{ mail.start_date }}</td>
         <td>{{ mail.end_date }}</td>
         <td>{{ mail.message }}</td>
-        <td>{{ mail.recipients }}</td>
+        <td>
+            {% for recipient in mail.recipients.all %}<ul class="nav nav-tabs" role="tablist">
+            <li>
+                {{ recipient.fullname }}</li></ul>{% endfor %}</td>
         <td>
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
                 Действие
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'sender:edit_mailing' message.pk %}">Редактировать</a></li>
-                <li><a class="dropdown-item " href="{% url 'sender:mailing_delete' message.pk %} " >Удалить</a></li>
+                <li><a class="dropdown-item" href="{% url 'sender:edit_mailing' mail.pk %}">Редактировать</a></li>
+                <li><a class="dropdown-item " href="{% url 'sender:mailing_delete' mail.pk %} " >Удалить</a></li>
             </ul>
         </td>
     </tr>
