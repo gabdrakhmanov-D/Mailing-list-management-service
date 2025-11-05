@@ -8,19 +8,19 @@ class UserSettingUpMix:
             if isinstance(field_object, BooleanField):
                 field_object.widget.attrs['class'] = 'form-chek-input'
 
-            elif field_name == 'message':
-                field_object.widget.attrs.update({
-                    'cols': '5',
-                    'rows': '3'
-                })
-            elif field_name == 'comment':
-                field_object.widget.attrs.update({
-                    'cols': '5',
-                    'rows': '3'
-                })
-
             else:
                 field_object.widget.attrs['class'] = 'form-control'
+                if field_name == 'message':
+                    field_object.label = "Сообщение"
+                    field_object.widget.attrs.update({
+                        'cols': '5',
+                        'rows': '3'
+                    })
+                if field_name == 'comment':
+                    field_object.widget.attrs.update({
+                        'cols': '5',
+                        'rows': '3'
+                    })
 
 
     def settingup_fields(self, fields):
