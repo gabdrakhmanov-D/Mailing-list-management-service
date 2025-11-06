@@ -43,12 +43,20 @@ class MailingAttemptView(ListView):
 
 
 def start_mailing(request, pk):
+
     mailing = Mailing.objects.get(pk=pk)
+    data = Mailing.objects.all()
     subject = mailing.message.subject_line
     message = mailing.message.message
     recipients = [recipient.email for recipient in mailing.recipients.all()]
-    mailing.start_date = datetime.now()
+    timezone = mailing.end_date.tzinfo
+    mailing.start_date = datetime.now(timezone)
     error = ''
+    if mailing.end_date < datetime.now(timezone):
+        mailing.status = Mailing.COMPLETED
+        mailing_status = f'Срок рассылки №{mailing.pk} истёк.'
+        context = {'mailing': data, 'mailing_status': mailing_status}
+        return render(request, 'message_sender/mailing_list.html', context)
     try:
         mailing.status = Mailing.LAUNCHED
         for recipient in recipients:
@@ -59,7 +67,6 @@ def start_mailing(request, pk):
                 recipient_list=[recipient],
                 fail_silently=False,
                 )
-        mailing.end_time = datetime.now()
         MailingAttempt.objects.create(
             date=mailing.start_date,
             status=MailingAttempt.SUCCESSFUL,
@@ -75,9 +82,7 @@ def start_mailing(request, pk):
             mailing=mailing
         )
     finally:
-        mailing.end_date = datetime.now()
         mailing.save()
-        data = Mailing.objects.all()
         if error:
             mailing_status = 'Ошибка при запуске рассылки'
             context = {'mailing': data, 'mailing_status': mailing_status}
@@ -85,37 +90,3 @@ def start_mailing(request, pk):
             mailing_status = f'Рассылка {mailing.pk} запущена успешно.'
             context = {'mailing': data, 'mailing_status': mailing_status}
         return render(request, 'message_sender/mailing_list.html', context)
-
-
-# def run_mailing(request, pk):
-#     """Функция запуска рассылки по требованию"""
-#     mailing = get_object_or_404(Mailing, id=pk)
-#     for recipient in mailing.recipients.all():
-#         try:
-#             mailing.status = Mailing.LAUNCHED
-#             send_mail(
-#                 subject=mailing.message.subject,
-#                 message=mailing.message.content,
-#                 from_email=EMAIL_HOST_USER,
-#                 recipient_list=[recipient.email],
-#                 fail_silently=False,
-#             )
-#             MailingAttempt.objects.create(
-#                 date_attempt=timezone.now(),
-#                 status=MailingAttempt.STATUS_OK,
-#                 server_response="Email отправлен",
-#                 mailing=mailing,
-#             )
-#         except Exception as e:
-#             print(f"Ошибка при отправке письма для {recipient.email}: {str(e)}")
-#             MailingAttempt.objects.create(
-#                 date_attempt=timezone.now(),
-#                 status=MailingAttempt.STATUS_NOK,
-#                 server_response=str(e),
-#                 mailing=mailing,
-#             )
-#     if mailing.end_sending and mailing.end_sending <= timezone.now():
-#         # Если время рассылки закончилось, обновляем статус на "завершено"
-#         mailing.status = Mailing.COMPLETED
-#     mailing.save()
-#     return redirect("mailing:mailing_list")
