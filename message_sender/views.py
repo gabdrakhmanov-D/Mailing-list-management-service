@@ -48,6 +48,7 @@ def start_mailing(request, pk):
     message = mailing.message.message
     recipients = [recipient.email for recipient in mailing.recipients.all()]
     mailing.start_date = datetime.now()
+
     try:
         mailing.status = Mailing.LAUNCHED
         for recipient in recipients:
@@ -62,18 +63,20 @@ def start_mailing(request, pk):
         MailingAttempt.objects.create(
             date=mailing.start_date,
             status=MailingAttempt.SUCCESSFUL,
-            mail_server_responsee="Рассылка отправлена",
+            mail_server_response="Рассылка отправлена",
             mailing=mailing)
 
     except Exception as e:
         MailingAttempt.objects.create(
-            date=datetime.now(),
+            date=mailing.start_date,
             status=MailingAttempt.NOT_SUCCESSFUL,
-            mail_server_responsee=str(e),
+            mail_server_response=str(e),
             mailing=mailing
         )
     finally:
-        end_time = datetime.now()
+        mailing.end_date = datetime.now()
+        mailing.save()
+        print(MailingAttempt.objects.all())
         return HttpResponse(f"Спасибо! Ваша рассылка {pk} запущена")
 
 # def run_mailing(request, pk):
