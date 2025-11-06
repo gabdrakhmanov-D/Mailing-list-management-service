@@ -1,13 +1,13 @@
 from datetime import datetime
 
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView
+from django.views.generic import ListView
 
 from .forms import MailingForm
-from .models import MailingRecipient, Message, Mailing, MailingAttempt
+from .models import Mailing, MailingAttempt
 
 
 # Create your views here.
@@ -48,7 +48,7 @@ def start_mailing(request, pk):
     message = mailing.message.message
     recipients = [recipient.email for recipient in mailing.recipients.all()]
     mailing.start_date = datetime.now()
-
+    error = ''
     try:
         mailing.status = Mailing.LAUNCHED
         for recipient in recipients:
@@ -67,17 +67,25 @@ def start_mailing(request, pk):
             mailing=mailing)
 
     except Exception as e:
+        error = str(e)
         MailingAttempt.objects.create(
             date=mailing.start_date,
             status=MailingAttempt.NOT_SUCCESSFUL,
-            mail_server_response=str(e),
+            mail_server_response=error,
             mailing=mailing
         )
     finally:
         mailing.end_date = datetime.now()
         mailing.save()
-        print(MailingAttempt.objects.all())
-        return HttpResponse(f"Спасибо! Ваша рассылка {pk} запущена")
+        data = Mailing.objects.all()
+        if error:
+            mailing_status = 'Ошибка при запуске рассылки'
+            context = {'mailing': data, 'mailing_status': mailing_status}
+        else:
+            mailing_status = f'Рассылка {mailing.pk} запущена успешно.'
+            context = {'mailing': data, 'mailing_status': mailing_status}
+        return render(request, 'message_sender/mailing_list.html', context)
+
 
 # def run_mailing(request, pk):
 #     """Функция запуска рассылки по требованию"""

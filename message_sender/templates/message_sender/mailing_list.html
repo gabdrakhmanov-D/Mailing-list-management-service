@@ -42,4 +42,8 @@
     {% endfor %}
     </tbody>
 </table>
+{% if mailing_status %}
+<div class="row text-center">
+<h5>{{ mailing_status }}</h5></div>
+{% endif %}
 {% endblock %}
