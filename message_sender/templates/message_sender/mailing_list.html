@@ -22,6 +22,7 @@
         <th scope="row">{{ mail.pk }}</th>
         <td>{{ mail.start_date }}</td>
         <td>{{ mail.end_date }}</td>
+        <td>{{ mail.status }}</td>
         <td>{{ mail.message }}</td>
         <td>
             {% for recipient in mail.recipients.all %}<ul class="nav nav-tabs" role="tablist">
@@ -32,6 +33,7 @@
                 Действие
             </button>
             <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'sender:start' mail.pk %}">Запустить</a></li>
                 <li><a class="dropdown-item" href="{% url 'sender:edit_mailing' mail.pk %}">Редактировать</a></li>
                 <li><a class="dropdown-item " href="{% url 'sender:mailing_delete' mail.pk %} " >Удалить</a></li>
             </ul>
