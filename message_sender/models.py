@@ -7,12 +7,12 @@ from messages_for_clients.models import Message
 class Mailing(models.Model):
     COMPLETED = 'completed'
     CREATED = 'created'
-    RUNNING = 'running'
+    LAUNCHED = 'launched'
 
     STATUS_CHOICES = [
         (COMPLETED, 'Завершена'),
         (CREATED, 'Создана'),
-        (RUNNING, 'Запущена')
+        (LAUNCHED, 'Запущена')
     ]
 
     start_date = models.DateTimeField(verbose_name='Дата и время первой отправки', blank=True, null=True)
