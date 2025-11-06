@@ -12,7 +12,7 @@ class Message(models.Model):
                                null=False,
                                verbose_name="Тело письма")
     def __str__(self):
-        return f'{self.subject_line} {self.message}'
+        return f'{self.subject_line}'
 
     class Meta:
         verbose_name = 'Сообщение'
