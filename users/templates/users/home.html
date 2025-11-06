@@ -3,12 +3,30 @@
 {% block title %}Главная{% endblock %}
 
 
-
 {% block content %}
 
 
 {% if user.is_authenticated %}
 {% include 'users\header.html' %}
+<div class="row mt-5">
+    <div class="col-3">
+    <table class="table table-hover text-center">
+        <thead>
+        <tr>
+            <th scope="col" class="table-primary">Количество всех рассылок</th>
+            <th scope="col" class="table-success">Количество активных рассылок (со статусом'Запущена') </th>
+            <th scope="col" class="table-danger">Количество уникальных получателей</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row" class="table-primary">{{ mailing_count }}</th>
+            <td class="table-success">{{ activ_mailing }}</td>
+            <td class="table-danger">{{ uniq_client_count }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div></div>
 <div class="position-absolute top-50 start-50 translate-middle">
     <div class="btn-group-vertical" role="group" aria-label="Группа вертикальных кнопок">
         <a href="{% url 'clients:recipients' %}" class="btn btn-primary">Управление клиентами</a>
@@ -16,9 +34,7 @@
         <a href="{% url 'messages:messages_list' %}" class="btn btn-primary">Управление сообщениями</a>
         <p></p>
         <a href="{% url 'sender:mailing' %}" class="btn btn-primary">Управление рассылками</a>
-
     </div>
-
 </div>
 
 {% else %}
