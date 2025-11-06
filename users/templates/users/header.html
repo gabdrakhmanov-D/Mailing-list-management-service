@@ -15,7 +15,10 @@
                 <a href="{% url 'clients:add_recipient' %}" class="btn btn-success">Добавить получателя</a>
                 {% elif 'messages' in request.path_info %}
                 <a href="{% url 'messages:add_message' %}" class="btn btn-primary">Добавить сообщение</a>
-                {% elif 'message_sender' in request.path_info %}
+                {% elif 'statistics' in request.path_info %}
+                <a href="{% url 'sender:add_mailing' %}" class="btn btn-success">Добавить рассылку</a>
+                <a class="btn btn-primary" href="{% url 'sender:mailing' %}">Вернуться к списку рассылок</a>
+                {% elif 'mailing' in request.path_info %}
                 <a href="{% url 'sender:add_mailing' %}" class="btn btn-success">Добавить рассылку</a>
                 <a class="btn btn-primary" href="{% url 'sender:statistics' %}">Статистика рассылки</a>
                 {% endif %}
