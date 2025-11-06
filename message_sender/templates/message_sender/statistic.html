@@ -1,0 +1,30 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Статус рассылки{% endblock %}
+
+{% block content %}
+{% include 'users/header.html' %}
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Дата и время попытки</th>
+        <th scope="col">Статус рассылки</th>
+        <th scope="col">Ответ почтового сервера</th>
+        <th scope="col">Тема рассылки</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for mail in mailing %}
+    <tr>
+        <th scope="row">{{ mail.pk }}</th>
+        <td>{{ mail.date }}</td>
+        <td>{{ mail.status }}</td>
+        <td>{{ mail.mail_server_response }}</td>
+        <td>{{ mail.message.message }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
