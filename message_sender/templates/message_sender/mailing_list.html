@@ -12,6 +12,9 @@
         <th scope="col">Статус рассылки</th>
         <th scope="col">Сообщение</th>
         <th scope="col">Получатели</th>
+        {% if perms.message_sender.can_view_all_mailings %}
+        <th scope="col">Рассылка активна</th>
+        {% endif %}
         <th scope="col"></th>
     </tr>
     </thead>
@@ -27,6 +30,9 @@
             {% for recipient in mail.recipients.all %}<ul class="nav nav-tabs" role="tablist">
             <li>
                 {{ recipient.fullname }}</li></ul>{% endfor %}</td>
+        {% if perms.message_sender.can_view_all_mailings %}
+        <th scope="col">{{ mail.is_hidden }}</th>
+        {% endif %}
         <td>
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
                 Действие
@@ -35,6 +41,13 @@
                 <li><a class="dropdown-item" href="{% url 'sender:start' mail.pk %}">Запустить</a></li>
                 <li><a class="dropdown-item" href="{% url 'sender:edit_mailing' mail.pk %}">Редактировать</a></li>
                 <li><a class="dropdown-item " href="{% url 'sender:mailing_delete' mail.pk %} " >Удалить</a></li>
+                {% if perms.message_sender.can_hide_mailing %}
+                {% if mail.is_hidden %}
+                <li><a class="dropdown-item " href="{% url 'sender:hide' mail.pk %}">Завершить и скрыть</a></li>
+                {% else %}
+                <li><a class="dropdown-item " href="{% url 'sender:activ' mail.pk %}">Сделать активной</a></li>
+                {% endif %}
+                {% endif %}
             </ul>
         </td>
     </tr>

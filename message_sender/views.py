@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.http import HttpResponseForbidden
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -31,7 +31,7 @@ class MailingListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         if not self.request.user.has_perm('message_sender.can_view_all_mailings'):
-            queryset = Mailing.objects.filter(owner=self.request.user)
+            queryset = Mailing.objects.filter(owner=self.request.user, is_hidden=True)
             return queryset
         return super().get_queryset()
 
@@ -125,3 +125,16 @@ def start_mailing(request, pk):
             mailing_status = f'Рассылка {mailing.pk} запущена успешно.'
             context = {'mailing': data, 'mailing_status': mailing_status}
         return render(request, 'message_sender/mailing_list.html', context)
+
+@login_required
+@permission_required('message_sender.can_hide_mailing', raise_exception=True)
+def hide_mailing(request, mailing_id):
+    Mailing.objects.filter(pk=mailing_id).update(is_hidden=False)
+    Mailing.objects.filter(pk=mailing_id).update(status='completed')
+    return redirect('sender:mailing')
+
+@login_required
+@permission_required('message_sender.can_hide_mailing', raise_exception=True)
+def activ_mailing(request, mailing_id):
+    Mailing.objects.filter(pk=mailing_id).update(is_hidden=True)
+    return redirect('sender:mailing')
