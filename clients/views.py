@@ -13,6 +13,10 @@ class RecipientCreate(LoginRequiredMixin, CreateView):
     template_name = 'clients/recipient_form.html'
     success_url = reverse_lazy('clients:recipients')
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
 
 class RecipientsListView(LoginRequiredMixin, ListView):
     model = MailingRecipient
