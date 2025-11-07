@@ -27,6 +27,7 @@ class MailingCreate(LoginRequiredMixin, CreateView):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
+
 @method_decorator(cache_page(60 * 2), name='dispatch')
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
@@ -38,6 +39,7 @@ class MailingListView(LoginRequiredMixin, ListView):
             queryset = get_mailings_from_cache().filter(owner=self.request.user, is_hidden=True)
             return queryset
         return get_mailings_from_cache()
+
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing
@@ -51,6 +53,7 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
             return HttpResponseForbidden("У вас нет доступа для редактирования этой записи.")
         return context
 
+
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
     model = Mailing
     template_name = 'message_sender/mailing_confirm_delete.html'
@@ -61,6 +64,7 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
         if self.request.user != self.object.owner and not self.request.user.has_perm('message_sender.can_view_all_mailings'):
             return HttpResponseForbidden("У вас нет доступа для удаления этой записи.")
         return context
+
 
 @method_decorator(cache_page(60), name='dispatch')
 class MailingAttemptView(LoginRequiredMixin, ListView):
@@ -74,13 +78,13 @@ class MailingAttemptView(LoginRequiredMixin, ListView):
             return queryset
         return super().get_queryset()
 
+
 @login_required
 def start_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
-    print(Mailing.objects.filter(owner=request.user.pk))
 
     if not request.user.has_perm('message_sender.can_view_all_mailings'):
-        data =Mailing.objects.filter(owner=request.user.pk)
+        data = Mailing.objects.filter(owner=request.user.pk)
     else:
         data = Mailing.objects.all()
 
@@ -106,7 +110,7 @@ def start_mailing(request, pk):
                 from_email="from@example.com",
                 recipient_list=[recipient],
                 fail_silently=False,
-                )
+            )
         MailingAttempt.objects.create(
             date=mailing.start_date,
             status=MailingAttempt.SUCCESSFUL,
@@ -131,12 +135,14 @@ def start_mailing(request, pk):
             context = {'mailing': data, 'mailing_status': mailing_status}
         return render(request, 'message_sender/mailing_list.html', context)
 
+
 @login_required
 @permission_required('message_sender.can_hide_mailing', raise_exception=True)
 def hide_mailing(request, mailing_id):
     Mailing.objects.filter(pk=mailing_id).update(is_hidden=False)
     Mailing.objects.filter(pk=mailing_id).update(status='completed')
     return redirect('sender:mailing')
+
 
 @login_required
 @permission_required('message_sender.can_hide_mailing', raise_exception=True)

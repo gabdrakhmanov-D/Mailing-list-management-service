@@ -22,7 +22,6 @@ class UserSettingUpMix:
                         'rows': '3'
                     })
 
-
     def settingup_fields(self, fields):
         for field, field_object in self.fields.items():
             if field == "username":

@@ -24,14 +24,16 @@ urlpatterns = [
          ),
          name='password_reset'),
     path('password-reset/done/',
-         PasswordResetDoneView.as_view(template_name = "users/password_reset_done.html"),
+         PasswordResetDoneView.as_view(template_name="users/password_reset_done.html"),
          name='password_reset_done'),
     path('password-reset/<uidb64>/<token>/',
          PasswordResetConfirmView.as_view(
              template_name="users/password_reset_confirm.html",
              success_url=reverse_lazy("users:password_reset_complete")
          ), name='password_reset_confirm'),
-    path('password-reset/complete/', PasswordResetCompleteView.as_view(template_name="users/password_reset_complete.html"), name='password_reset_complete'),
+    path('password-reset/complete/',
+         PasswordResetCompleteView.as_view(template_name="users/password_reset_complete.html"),
+         name='password_reset_complete'),
     path("manager_page/", UserListView.as_view(), name="mngr_page"),
     path("manager_page/<int:user_id>/disable/", block_user, name="disable_user"),
     path("manager_page/<int:user_id>/unlock/", unlock_user, name="unlock_user")

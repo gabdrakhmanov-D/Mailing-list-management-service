@@ -55,4 +55,3 @@ class MailingAttempt(models.Model):
                                             verbose_name="Ответ почтового сервера")
 
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
-

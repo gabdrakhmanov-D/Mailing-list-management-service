@@ -48,6 +48,7 @@ class UserSettingUpProfile(UserSettingUpMix, UserChangeForm):
         self.fields['username'].widget.attrs.update({'readonly': True})
         self.fields['email'].widget.attrs.update({'readonly': True})
 
+
 class UserPasswordChangeForm(UserSettingUpMix, PasswordChangeForm):
     old_password = forms.CharField(label="Старый пароль")
     new_password1 = forms.CharField(label="Новый пароль")

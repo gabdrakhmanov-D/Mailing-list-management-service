@@ -14,9 +14,11 @@ from message_sender.models import Mailing
 from users.forms import UserRegisterForm, UserSettingUpLoginForm, UserSettingUpProfile, UserPasswordChangeForm
 from users.models import User
 
+
 @method_decorator(cache_page(60 * 2), name='dispatch')
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'users/home.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['mailing_count'] = Mailing.objects.count()
@@ -51,6 +53,7 @@ class UserProfileEdit(LoginRequiredMixin, UpdateView):
         self.success_url = reverse_lazy("users:profile", kwargs={'pk': page})
         return super().form_valid(form)
 
+
 class UserPasswordChange(PasswordChangeView):
     form_class = UserPasswordChangeForm
     template_name = "users/password_change_form.html"
@@ -66,12 +69,14 @@ class UserPasswordChangeDone(PasswordChangeDoneView):
     template_name = 'users/home.html'
     extra_context = {'psw_change_done': 'Вы успешно изменили пароль.'}
 
+
 @method_decorator(cache_page(60 * 2), name='dispatch')
 class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = User
     template_name = 'managers/users_list.html'
     context_object_name = 'users'
     permission_required = "users.can_view_list_users"
+
 
 @permission_required('users.can_view_list_users', raise_exception=True)
 def block_user(request, user_id):
@@ -80,6 +85,7 @@ def block_user(request, user_id):
     user.save()
     Mailing.objects.filter(owner=user_id, status='launched').update(status='completed')
     return redirect('users:mngr_page')
+
 
 @permission_required('users.can_view_list_users', raise_exception=True)
 def unlock_user(request, user_id):

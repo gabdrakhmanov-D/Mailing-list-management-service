@@ -16,6 +16,7 @@ class MessageCreate(LoginRequiredMixin, CreateView):
     template_name = 'messages_for_clients/message_form.html'
     success_url = reverse_lazy('messages:messages_list')
 
+
 @method_decorator(cache_page(60 * 2), name='dispatch')
 class MessagesListView(LoginRequiredMixin, ListView):
     model = Message

@@ -16,7 +16,6 @@ class Command(BaseCommand):
                             type=int,
                             help='ID рассылки, указываются через пробел.')
 
-
     def handle(self, *args, **kwargs):
         if kwargs['pk']:
             for mailing_pk in kwargs['pk']:

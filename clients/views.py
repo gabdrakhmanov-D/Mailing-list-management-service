@@ -20,6 +20,7 @@ class RecipientCreate(LoginRequiredMixin, CreateView):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
+
 @method_decorator(cache_page(60 * 2), name='dispatch')
 class RecipientsListView(LoginRequiredMixin, ListView):
     model = MailingRecipient
@@ -56,4 +57,3 @@ class RecipientDeleteView(LoginRequiredMixin, DeleteView):
         if self.request.user != self.object.owner and not self.request.user.has_perm('clients.can_view_all_clients'):
             return HttpResponseForbidden("У вас нет доступа для удаления этой записи.")
         return context
-
