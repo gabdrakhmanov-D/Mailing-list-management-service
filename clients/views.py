@@ -23,6 +23,12 @@ class RecipientsListView(LoginRequiredMixin, ListView):
     template_name = 'clients/recipient_list.html'
     context_object_name = 'recipients'
 
+    def get_queryset(self):
+        if not self.request.user.has_perm('clients.can_view_all_clients'):
+            queryset = MailingRecipient.objects.filter(owner=self.request.user)
+            return queryset
+        return super().get_queryset()
+
 
 class RecipientUpdateView(LoginRequiredMixin, UpdateView):
     model = MailingRecipient
