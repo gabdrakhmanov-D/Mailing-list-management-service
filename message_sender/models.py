@@ -2,6 +2,7 @@ from django.db import models
 
 from clients.models import MailingRecipient
 from messages_for_clients.models import Message
+from users.models import User
 
 
 class Mailing(models.Model):
@@ -20,6 +21,7 @@ class Mailing(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=CREATED, verbose_name="Статус рассылки")
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     recipients = models.ManyToManyField(MailingRecipient, verbose_name='Получатели')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор рассылки", related_name="mailings")
 
     def __str__(self):
         return f'{self.status}'
