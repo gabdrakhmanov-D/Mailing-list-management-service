@@ -16,7 +16,7 @@
     {% csrf_token %}
     <div class="form-error">{{ form.non_field_errors }}</div>
     {{ form.as_div }}
-    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <button type="submit" class="btn btn-success">Сохранить</button>
+    <a class="btn btn-danger" href="{% url 'users:password_change' %}">Изменить пароль</a>
 </form>
-
 {% endblock %}

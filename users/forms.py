@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 
 from users.models import User
 
@@ -47,3 +47,8 @@ class UserSettingUpProfile(UserSettingUpMix, UserChangeForm):
         self.settingup_fields(self.fields)
         self.fields['username'].widget.attrs.update({'readonly': True})
         self.fields['email'].widget.attrs.update({'readonly': True})
+
+class UserPasswordChangeForm(UserSettingUpMix, PasswordChangeForm):
+    old_password = forms.CharField(label="Старый пароль")
+    new_password1 = forms.CharField(label="Новый пароль")
+    new_password2 = forms.CharField(label="Подтверждение пароля")

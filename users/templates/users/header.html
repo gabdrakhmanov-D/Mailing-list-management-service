@@ -18,7 +18,7 @@
                 {% elif 'statistics' in request.path_info %}
                 <a href="{% url 'sender:add_mailing' %}" class="btn btn-success">Добавить рассылку</a>
                 <a class="btn btn-primary" href="{% url 'sender:mailing' %}">Вернуться к списку рассылок</a>
-                {% elif 'mailing' or 'start' in request.path_info %}
+                {% elif 'mailing_list' or 'start' in request.path_info %}
                 <a href="{% url 'sender:add_mailing' %}" class="btn btn-success">Добавить рассылку</a>
                 <a class="btn btn-primary" href="{% url 'sender:statistics' %}">Статистика рассылки</a>
                 {% endif %}

@@ -6,7 +6,7 @@ from django.views.generic import CreateView, UpdateView, TemplateView
 
 from clients.models import MailingRecipient
 from message_sender.models import Mailing
-from users.forms import UserRegisterForm, UserSettingUpLoginForm, UserSettingUpProfile
+from users.forms import UserRegisterForm, UserSettingUpLoginForm, UserSettingUpProfile, UserPasswordChangeForm
 from users.models import User
 
 
@@ -47,11 +47,16 @@ class UserProfileEdit(UpdateView):
         return super().form_valid(form)
 
 class UserPasswordChange(PasswordChangeView):
-    form_class =
-    success_url = reverse_lazy("users:password_change_done")
+    form_class = UserPasswordChangeForm
     template_name = "users/password_change_form.html"
-    extra_context = {'title': "Изменение пароля"}
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        self.success_url = reverse_lazy('users:password_change_done')
+        return super().form_valid(form)
 
 
 class UserPasswordChangeDone(PasswordChangeDoneView):
-    template_name = 'users/login.html'
+    template_name = 'users/home.html'
+    extra_context = {'psw_change_done': 'Вы успешно изменили пароль.'}
