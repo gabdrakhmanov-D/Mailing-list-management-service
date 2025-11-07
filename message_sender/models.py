@@ -22,7 +22,7 @@ class Mailing(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     recipients = models.ManyToManyField(MailingRecipient, verbose_name='Получатели')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор рассылки", related_name="mailings")
-    is_hidden = models.BooleanField(verbose_name='Статус отображения рассылки')
+    is_hidden = models.BooleanField(verbose_name='Статус отображения рассылки', default=True)
 
     def __str__(self):
         return f'{self.status}'
