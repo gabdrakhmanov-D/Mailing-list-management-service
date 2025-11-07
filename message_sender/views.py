@@ -19,12 +19,20 @@ class MailingCreate(LoginRequiredMixin, CreateView):
     template_name = 'message_sender/mailing_form.html'
     success_url = reverse_lazy('sender:mailing')
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
     template_name = 'message_sender/mailing_list.html'
     context_object_name = 'mailing'
 
+    def get_queryset(self):
+        if not self.request.user.has_perm('clients.can_view_all_mailings'):
+            queryset = Mailing.objects.filter(owner=self.request.user)
+            return queryset
+        return super().get_queryset()
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing
