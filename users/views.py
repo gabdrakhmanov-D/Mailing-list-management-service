@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, TemplateView
+from django.views.generic import CreateView, UpdateView, TemplateView, ListView
 
 from clients.models import MailingRecipient
 from message_sender.models import Mailing
@@ -62,3 +62,9 @@ class UserPasswordChange(PasswordChangeView):
 class UserPasswordChangeDone(PasswordChangeDoneView):
     template_name = 'users/home.html'
     extra_context = {'psw_change_done': 'Вы успешно изменили пароль.'}
+
+
+class UserListView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'managers/users_list.html'
+    context_object_name = 'users'

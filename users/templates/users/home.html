@@ -32,6 +32,9 @@
         <a href="{% url 'messages:messages_list' %}" class="btn btn-primary">Управление сообщениями</a>
         <p></p>
         <a href="{% url 'sender:mailing' %}" class="btn btn-primary">Управление рассылками</a>
+        <p></p>
+        <a href="{% url 'users:mngr_page' %}" class="btn btn-primary">Управление пользователями</a>
+
     </div>
 </div>
 {% if psw_change_done %}

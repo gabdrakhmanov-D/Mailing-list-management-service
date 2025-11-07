@@ -15,6 +15,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+        ordering = ['pk']
         permissions = [
             ("can_view_list_users", "Сan view a list of users"),
         ]
