@@ -76,6 +76,7 @@ def block_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user.is_active = False
     user.save()
+    Mailing.objects.filter(owner=user_id, status='launched').update(status='completed')
     return redirect('users:mngr_page')
 
 @permission_required('users.can_view_list_users', raise_exception=True)

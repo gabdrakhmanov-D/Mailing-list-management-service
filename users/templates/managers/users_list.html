@@ -16,6 +16,7 @@
     </thead>
     <tbody>
     {% for user in users %}
+    {% if request.user != user %}
     <tr>
         <th scope="row">{{ user.pk }}</th>
         <td>{{ user.email }}</td>
@@ -35,6 +36,7 @@
             </ul>
         </td>
     </tr>
+    {% endif %}
     {% endfor %}
     </tbody>
 </table>
