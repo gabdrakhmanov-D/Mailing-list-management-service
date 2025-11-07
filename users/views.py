@@ -1,4 +1,6 @@
-from django.contrib.auth.views import LoginView
+from django.contrib.auth import login
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, TemplateView
 
@@ -22,6 +24,11 @@ class RegisterView(CreateView):
     template_name = 'users/register.html'
     form_class = UserRegisterForm
 
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('users:home')
+
 
 class UserLoginView(LoginView):
     template_name = 'users/login.html'
@@ -38,3 +45,13 @@ class UserProfileEdit(UpdateView):
         page = self.get_context_data()['object'].pk
         self.success_url = reverse_lazy("users:profile", kwargs={'pk': page})
         return super().form_valid(form)
+
+class UserPasswordChange(PasswordChangeView):
+    form_class =
+    success_url = reverse_lazy("users:password_change_done")
+    template_name = "users/password_change_form.html"
+    extra_context = {'title': "Изменение пароля"}
+
+
+class UserPasswordChangeDone(PasswordChangeDoneView):
+    template_name = 'users/login.html'
