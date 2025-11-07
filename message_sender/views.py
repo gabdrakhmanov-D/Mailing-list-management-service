@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
+from django.http import HttpResponseForbidden
 from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -40,11 +41,22 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'message_sender/mailing_form.html'
     success_url = reverse_lazy('sender:mailing')
 
+    def get(self, *args, **kwargs):
+        context = super().get(kwargs, args)
+        if self.request.user != self.object.owner and not self.request.user.has_perm('clients.can_view_all_mailings'):
+            return HttpResponseForbidden("У вас нет доступа для редактирования этой записи.")
+        return context
 
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
     model = Mailing
     template_name = 'message_sender/mailing_confirm_delete.html'
     success_url = reverse_lazy('sender:mailing')
+
+    def get(self, *args, **kwargs):
+        context = super().get(kwargs, args)
+        if self.request.user != self.object.owner and not self.request.user.has_perm('clients.can_view_all_mailings'):
+            return HttpResponseForbidden("У вас нет доступа для удаления этой записи.")
+        return context
 
 class MailingAttemptView(LoginRequiredMixin, ListView):
     model = MailingAttempt
