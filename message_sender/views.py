@@ -13,6 +13,7 @@ from django.views.generic import ListView
 
 from .forms import MailingForm
 from .models import Mailing, MailingAttempt
+from .services import get_mailings_from_cache
 
 
 # Create your views here.
@@ -34,9 +35,9 @@ class MailingListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         if not self.request.user.has_perm('message_sender.can_view_all_mailings'):
-            queryset = Mailing.objects.filter(owner=self.request.user, is_hidden=True)
+            queryset = get_mailings_from_cache().filter(owner=self.request.user, is_hidden=True)
             return queryset
-        return super().get_queryset()
+        return get_mailings_from_cache()
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing

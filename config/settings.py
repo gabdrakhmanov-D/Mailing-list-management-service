@@ -148,7 +148,6 @@ AUTH_USER_MODEL = 'users.User'
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 LOGIN_URL = reverse_lazy('users:login')
-LOGOUT_URL = reverse_lazy('users:logout')
 
 CACHES = {
     'default': {

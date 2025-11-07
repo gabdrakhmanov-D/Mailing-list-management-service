@@ -12,7 +12,7 @@ urlpatterns = [
     path("home/", HomeView.as_view(), name="home"),
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', UserLoginView.as_view(next_page='users:home'), name='login'),
-    path('logout/', LogoutView.as_view(next_page='users:home'), name='logout'),
+    path('logout/', LogoutView.as_view(next_page='users:login'), name='logout'),
     path('profile/<int:pk>', UserProfileEdit.as_view(), name='profile'),
     path('password-change/', UserPasswordChange.as_view(), name='password_change'),
     path('password-change/done/', UserPasswordChangeDone.as_view(), name='password_change_done'),
