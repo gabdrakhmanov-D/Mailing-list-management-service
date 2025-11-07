@@ -2,13 +2,11 @@
 
     <div class="row justify-content-center">
         <div class="btn-group" role="group">
-            {% if user.is_authenticated %}
             <div class="col-3 pt-1 d-grid">
                 <a class="btn btn-warning" href="{% url 'users:profile' user.pk%}">Профиль</a>
             </div>
             <div class="col-3 pt-1 d-grid text-center">
-                <a class="btn btn-primary" href="{% url 'users:home' %}">На
-                    главную</a>
+                <a class="btn btn-primary" href="{% url 'users:home' %}">На главную</a>
             </div>
             <div class="col-3 d-grid pt-1">
                 {% if 'clients' in request.path_info %}
@@ -29,7 +27,6 @@
                     <button type="submit" class="btn btn-danger ">Выйти</button>
                 </form>
             </div>
-            {% else %}
             <div class="col-3 d-grid pt-1"></div>
             <div class="col-3 d-grid text-center">
                 <a class="btn btn-primary" href="{% url 'users:home' %}">На
@@ -38,5 +35,4 @@
             <div class="col-3 d-grid pt-1"></div>
         </div>
     </div>
-    {% endif %}
 </header>

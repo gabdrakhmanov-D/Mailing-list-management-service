@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -11,37 +13,37 @@ from .models import Mailing, MailingAttempt
 
 
 # Create your views here.
-class MailingCreate(CreateView):
+class MailingCreate(LoginRequiredMixin, CreateView):
     model = Mailing
     form_class = MailingForm
     template_name = 'message_sender/mailing_form.html'
     success_url = reverse_lazy('sender:mailing')
 
 
-class MailingListView(ListView):
+class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
     template_name = 'message_sender/mailing_list.html'
     context_object_name = 'mailing'
 
 
-class MailingUpdateView(UpdateView):
+class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing
     form_class = MailingForm
     template_name = 'message_sender/mailing_form.html'
     success_url = reverse_lazy('sender:mailing')
 
 
-class MailingDeleteView(DeleteView):
+class MailingDeleteView(LoginRequiredMixin, DeleteView):
     model = Mailing
     template_name = 'message_sender/mailing_confirm_delete.html'
     success_url = reverse_lazy('sender:mailing')
 
-class MailingAttemptView(ListView):
+class MailingAttemptView(LoginRequiredMixin, ListView):
     model = MailingAttempt
     template_name = 'message_sender/statistic.html'
     context_object_name = 'mailing'
 
-
+@login_required
 def start_mailing(request, pk):
 
     mailing = Mailing.objects.get(pk=pk)

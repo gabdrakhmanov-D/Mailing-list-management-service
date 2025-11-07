@@ -16,7 +16,9 @@
 
 </head>
 <body class="bg-info-subtle">
+{% if user.is_authenticated %}
 {% include 'users\header.html' %}
+{% endif%}
 {% block content %}
 
 

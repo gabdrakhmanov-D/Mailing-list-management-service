@@ -1,4 +1,6 @@
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -10,7 +12,7 @@ from users.forms import UserRegisterForm, UserSettingUpLoginForm, UserSettingUpP
 from users.models import User
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'users/home.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
