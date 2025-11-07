@@ -16,6 +16,11 @@
 
 </head>
 <body class="bg-info-subtle">
-{% block content %}{% endblock %}
+{% include 'users\header.html' %}
+{% block content %}
+
+
+{% block head %}{% endblock %}
+{% endblock %}
 </body>
 </html>
