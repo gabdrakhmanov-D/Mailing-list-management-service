@@ -1,5 +1,5 @@
 from django.contrib.auth import login
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView
 from django.shortcuts import redirect
@@ -64,7 +64,8 @@ class UserPasswordChangeDone(PasswordChangeDoneView):
     extra_context = {'psw_change_done': 'Вы успешно изменили пароль.'}
 
 
-class UserListView(LoginRequiredMixin, ListView):
+class UserListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     model = User
     template_name = 'managers/users_list.html'
     context_object_name = 'users'
+    permission_required = "users.can_view_list_users"
