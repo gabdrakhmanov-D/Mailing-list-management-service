@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseForbidden
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
@@ -36,9 +37,21 @@ class RecipientUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'clients/recipient_form.html'
     success_url = reverse_lazy('recipients')
 
+    def get(self, *args, **kwargs):
+        context = super().get(kwargs, args)
+        if self.request.user != self.object.owner and not self.request.user.has_perm('clients.can_view_all_clients'):
+            return HttpResponseForbidden("У вас нет доступа для редактирования этой записи.")
+        return context
+
 
 class RecipientDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingRecipient
     template_name = 'clients/recipient_confirm_delete.html'
     success_url = reverse_lazy('clients:recipients')
+
+    def get(self, *args, **kwargs):
+        context = super().get(kwargs, args)
+        if self.request.user != self.object.owner and not self.request.user.has_perm('clients.can_view_all_clients'):
+            return HttpResponseForbidden("У вас нет доступа для удаления этой записи.")
+        return context
 
