@@ -63,22 +63,35 @@ class MailingAttemptView(LoginRequiredMixin, ListView):
     template_name = 'message_sender/statistic.html'
     context_object_name = 'mailing'
 
+    def get_queryset(self):
+        if not self.request.user.has_perm('clients.can_view_all_mailings'):
+            queryset = MailingAttempt.objects.filter(mailing__owner=self.request.user)
+            return queryset
+        return super().get_queryset()
+
 @login_required
 def start_mailing(request, pk):
-
     mailing = Mailing.objects.get(pk=pk)
-    data = Mailing.objects.all()
+    print(Mailing.objects.filter(owner=request.user.pk))
+
+    if not request.user.has_perm('clients.can_view_all_mailings'):
+        data =Mailing.objects.filter(owner=request.user.pk)
+    else:
+        data = Mailing.objects.all()
+
     subject = mailing.message.subject_line
     message = mailing.message.message
     recipients = [recipient.email for recipient in mailing.recipients.all()]
     timezone = mailing.end_date.tzinfo
     mailing.start_date = datetime.now(timezone)
     error = ''
+
     if mailing.end_date < datetime.now(timezone):
         mailing.status = Mailing.COMPLETED
         mailing_status = f'Срок рассылки №{mailing.pk} истёк.'
         context = {'mailing': data, 'mailing_status': mailing_status}
         return render(request, 'message_sender/mailing_list.html', context)
+
     try:
         mailing.status = Mailing.LAUNCHED
         for recipient in recipients:
