@@ -14,6 +14,7 @@ class UserRegisterForm(UserSettingUpMix, UserCreationForm):
                   "first_name",
                   "last_name",
                   "phone_number",
+                  "country",
                   "avatar",
                   "password1",
                   "password2")
@@ -38,6 +39,7 @@ class UserSettingUpProfile(UserSettingUpMix, UserChangeForm):
                   "username",
                   "first_name",
                   "last_name",
+                  "country",
                   "phone_number",
                   "avatar",
                   )
