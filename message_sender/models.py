@@ -33,6 +33,7 @@ class Mailing(models.Model):
         ordering = ['-start_date']
         permissions = [
             ("can_view_all_mailings", "Сan view all mailings"),
+            ("can_hide_mailing", "Can hide the mailing"),
         ]
 
 
