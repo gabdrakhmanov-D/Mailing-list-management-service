@@ -43,8 +43,13 @@ class UserLoginView(LoginView):
     success_url = reverse_lazy('users:home')
 
 
-class UserProfileEdit(LoginRequiredMixin, UpdateView):
+class UserProfileView(TemplateView):
     template_name = 'users/profile.html'
+    model = User
+    context_object_name = 'user'
+
+class UserProfileEdit(LoginRequiredMixin, UpdateView):
+    template_name = 'users/profile_edit.html'
     form_class = UserSettingUpProfile
     model = User
 
