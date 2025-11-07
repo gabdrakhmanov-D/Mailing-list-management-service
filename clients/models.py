@@ -28,3 +28,6 @@ class MailingRecipient(models.Model):
     class Meta:
         verbose_name = 'Получатель'
         verbose_name_plural = 'Получатели'
+        permissions = [
+            ("can_view_all_clients", "Сan view all clients"),
+        ]

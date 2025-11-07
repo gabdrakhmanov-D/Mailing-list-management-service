@@ -30,6 +30,9 @@ class Mailing(models.Model):
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
         ordering = ['-start_date']
+        permissions = [
+            ("can_view_all_mailings", "Сan view all mailings"),
+        ]
 
 
 class MailingAttempt(models.Model):

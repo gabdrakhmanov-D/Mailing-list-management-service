@@ -30,7 +30,7 @@ class MailingListView(LoginRequiredMixin, ListView):
     context_object_name = 'mailing'
 
     def get_queryset(self):
-        if not self.request.user.has_perm('clients.can_view_all_mailings'):
+        if not self.request.user.has_perm('message_sender.can_view_all_mailings'):
             queryset = Mailing.objects.filter(owner=self.request.user)
             return queryset
         return super().get_queryset()
@@ -43,7 +43,7 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
 
     def get(self, *args, **kwargs):
         context = super().get(kwargs, args)
-        if self.request.user != self.object.owner and not self.request.user.has_perm('clients.can_view_all_mailings'):
+        if self.request.user != self.object.owner and not self.request.user.has_perm('message_sender.can_view_all_mailings'):
             return HttpResponseForbidden("У вас нет доступа для редактирования этой записи.")
         return context
 
@@ -54,7 +54,7 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
 
     def get(self, *args, **kwargs):
         context = super().get(kwargs, args)
-        if self.request.user != self.object.owner and not self.request.user.has_perm('clients.can_view_all_mailings'):
+        if self.request.user != self.object.owner and not self.request.user.has_perm('message_sender.can_view_all_mailings'):
             return HttpResponseForbidden("У вас нет доступа для удаления этой записи.")
         return context
 
@@ -64,7 +64,7 @@ class MailingAttemptView(LoginRequiredMixin, ListView):
     context_object_name = 'mailing'
 
     def get_queryset(self):
-        if not self.request.user.has_perm('clients.can_view_all_mailings'):
+        if not self.request.user.has_perm('message_sender.can_view_all_mailings'):
             queryset = MailingAttempt.objects.filter(mailing__owner=self.request.user)
             return queryset
         return super().get_queryset()
@@ -74,7 +74,7 @@ def start_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
     print(Mailing.objects.filter(owner=request.user.pk))
 
-    if not request.user.has_perm('clients.can_view_all_mailings'):
+    if not request.user.has_perm('message_sender.can_view_all_mailings'):
         data =Mailing.objects.filter(owner=request.user.pk)
     else:
         data = Mailing.objects.all()
