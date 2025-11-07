@@ -21,13 +21,26 @@ class Command(BaseCommand):
         if kwargs['pk']:
             for mailing_pk in kwargs['pk']:
                 try:
-                    mailings = Mailing.objects.get(pk=mailing_pk)
-                    self.send_email(mailings)
+                    mailing = Mailing.objects.get(pk=mailing_pk)
+                    timezone = mailing.end_date.tzinfo
+                    if mailing.end_date < datetime.now(timezone):
+                        mailing.status = Mailing.COMPLETED
+                        self.stdout.write(
+                            self.style.ERROR('Срок рассылки "%s" истёк. ' % mailing.pk)
+                        )
+                    else:
+                        self.send_email(mailing)
                 except Mailing.DoesNotExist:
                     raise CommandError('Рассылка c ID %s не существует' % mailing_pk)
         else:
             mailings = Mailing.objects.filter(status__in=[Mailing.CREATED, Mailing.LAUNCHED])
             for mailing in mailings:
+                timezone = mailing.end_date.tzinfo
+                if mailing.end_date < datetime.now(timezone):
+                    mailing.status = Mailing.COMPLETED
+                    self.stdout.write(
+                        self.style.ERROR('Срок рассылки "%s" истёк. ' % mailing.pk)
+                    )
                 self.send_email(mailing)
         self.stdout.write(
             self.style.WARNING('Команда завершила работу')
@@ -35,9 +48,10 @@ class Command(BaseCommand):
 
     def send_email(self, mailing):
         subject = mailing.message.subject_line
+        timezone = mailing.end_date.tzinfo
         message = mailing.message.message
         recipients = [recipient.email for recipient in mailing.recipients.all()]
-        mailing.start_date = datetime.now()
+        mailing.start_date = datetime.now(timezone)
         try:
             mailing.status = Mailing.LAUNCHED
             for recipient in recipients:
@@ -48,7 +62,7 @@ class Command(BaseCommand):
                     recipient_list=[recipient],
                     fail_silently=False,
                 )
-            mailing.end_time = datetime.now()
+            mailing.end_time = datetime.now(timezone)
             MailingAttempt.objects.create(
                 date=mailing.start_date,
                 status=MailingAttempt.SUCCESSFUL,
@@ -66,8 +80,7 @@ class Command(BaseCommand):
                 mailing=mailing
             )
             self.stdout.write(
-                self.style.DANGER('Отправка рассылки не удалась "%s"' % mailing.pk)
+                self.style.ERROR('Отправка рассылки не удалась "%s"' % mailing.pk)
             )
         finally:
-            mailing.end_date = datetime.now()
             mailing.save()
