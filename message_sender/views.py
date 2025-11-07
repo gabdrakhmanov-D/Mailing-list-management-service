@@ -5,6 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -24,6 +26,7 @@ class MailingCreate(LoginRequiredMixin, CreateView):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
+@method_decorator(cache_page(60 * 2), name='dispatch')
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
     template_name = 'message_sender/mailing_list.html'
@@ -58,6 +61,7 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
             return HttpResponseForbidden("У вас нет доступа для удаления этой записи.")
         return context
 
+@method_decorator(cache_page(60), name='dispatch')
 class MailingAttemptView(LoginRequiredMixin, ListView):
     model = MailingAttempt
     template_name = 'message_sender/statistic.html'

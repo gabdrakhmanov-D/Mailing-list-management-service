@@ -1,4 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -14,7 +16,7 @@ class MessageCreate(LoginRequiredMixin, CreateView):
     template_name = 'messages_for_clients/message_form.html'
     success_url = reverse_lazy('messages:messages_list')
 
-
+@method_decorator(cache_page(60 * 2), name='dispatch')
 class MessagesListView(LoginRequiredMixin, ListView):
     model = Message
     template_name = 'messages_for_clients/messages_list.html'

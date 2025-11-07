@@ -1,6 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseForbidden
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
 from clients.forms import ClientsForm
@@ -18,7 +20,7 @@ class RecipientCreate(LoginRequiredMixin, CreateView):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
-
+@method_decorator(cache_page(60 * 2), name='dispatch')
 class RecipientsListView(LoginRequiredMixin, ListView):
     model = MailingRecipient
     template_name = 'clients/recipient_list.html'

@@ -5,6 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, UpdateView, TemplateView, ListView
 
 from clients.models import MailingRecipient
@@ -12,7 +14,7 @@ from message_sender.models import Mailing
 from users.forms import UserRegisterForm, UserSettingUpLoginForm, UserSettingUpProfile, UserPasswordChangeForm
 from users.models import User
 
-
+@method_decorator(cache_page(60 * 2), name='dispatch')
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'users/home.html'
     def get_context_data(self, **kwargs):
@@ -64,7 +66,7 @@ class UserPasswordChangeDone(PasswordChangeDoneView):
     template_name = 'users/home.html'
     extra_context = {'psw_change_done': 'Вы успешно изменили пароль.'}
 
-
+@method_decorator(cache_page(60 * 2), name='dispatch')
 class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = User
     template_name = 'managers/users_list.html'
