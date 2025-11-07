@@ -1,5 +1,8 @@
 from django.db import models
 
+from users.models import User
+
+
 class MailingRecipient(models.Model):
 
     email = models.CharField(max_length=150,
@@ -16,6 +19,8 @@ class MailingRecipient(models.Model):
     comment = models.TextField(blank=True,
                                null=True,
                                verbose_name="Комментарий")
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор добавления", related_name="clients")
 
     def __str__(self):
         return f'{self.email} {self.fullname}'
