@@ -1,8 +1,9 @@
 from django.contrib.auth import login
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, TemplateView, ListView
 
@@ -64,8 +65,22 @@ class UserPasswordChangeDone(PasswordChangeDoneView):
     extra_context = {'psw_change_done': 'Вы успешно изменили пароль.'}
 
 
-class UserListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = User
     template_name = 'managers/users_list.html'
     context_object_name = 'users'
     permission_required = "users.can_view_list_users"
+
+@permission_required('users.can_view_list_users', raise_exception=True)
+def block_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.is_active = False
+    user.save()
+    return redirect('users:mngr_page')
+
+@permission_required('users.can_view_list_users', raise_exception=True)
+def unlock_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.is_active = True
+    user.save()
+    return redirect('users:mngr_page')

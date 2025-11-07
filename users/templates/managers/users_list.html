@@ -21,13 +21,17 @@
         <td>{{ user.email }}</td>
         <td>{{ user.login|default:"Логин не указан" }}</td>
         <td>{{ user.last_name }} {{ user.first_name }}</td>
-        <td>{{ user.phone_number|default:"Телефон не указан" }}</td>
+        <td>{{ user.is_active }}</td>
         <td>
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
                 Действие
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Блокировать</a></li>
+                {% if user.is_active %}
+                <li><a class="dropdown-item" href="{% url 'users:disable_user' user.pk %}">Блокировать</a></li>
+                {% else %}
+                <li><a class="dropdown-item" href="{% url 'users:unlock_user' user.pk %}">Разблокировать</a></li>
+                {% endif %}
             </ul>
         </td>
     </tr>

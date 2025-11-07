@@ -4,7 +4,7 @@ from django.urls import path, reverse_lazy
 
 from users.apps import UsersConfig
 from users.views import RegisterView, UserLoginView, UserProfileEdit, HomeView, UserPasswordChange, \
-    UserPasswordChangeDone, UserListView
+    UserPasswordChangeDone, UserListView, block_user, unlock_user
 
 app_name = UsersConfig.name
 
@@ -33,4 +33,6 @@ urlpatterns = [
          ), name='password_reset_confirm'),
     path('password-reset/complete/', PasswordResetCompleteView.as_view(template_name="users/password_reset_complete.html"), name='password_reset_complete'),
     path("manager_page/", UserListView.as_view(), name="mngr_page"),
+    path("manager_page/<int:user_id>/disable/", block_user, name="disable_user"),
+    path("manager_page/<int:user_id>/unlock/", unlock_user, name="unlock_user")
 ]
