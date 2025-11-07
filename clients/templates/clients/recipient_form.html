@@ -14,6 +14,7 @@
       class="position-absolute top-50 start-50 translate-middle border border-success rounded bg-warning-subtle"
       style="width: 25%;">
     {% csrf_token %}
+    <div class="form-error">{{ form.errors }}</div>
     <div class="mb-3 mt-3 px-4">
         <label for="{{ form.fullname.id_for_label }}" class="form-label">{{ form.fullname.label }}</label>
         <input type="text" class="form-control" id="{{ form.fullname.id_for_label }}" name="{{ form.fullname.name }}"
