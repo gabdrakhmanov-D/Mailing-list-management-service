@@ -1,5 +1,7 @@
 from django.urls import path
-from message_sender.views import *
+
+from message_sender.views import MailingListView, MailingAttemptView, MailingCreate, MailingUpdateView, \
+    MailingDeleteView, start_mailing, hide_mailing, activ_mailing
 
 app_name = 'message_sender'
 

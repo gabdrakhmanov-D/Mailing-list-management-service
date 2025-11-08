@@ -5,8 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, UpdateView, TemplateView, ListView
 
 from clients.models import MailingRecipient
@@ -46,6 +44,7 @@ class UserProfileView(TemplateView):
     template_name = 'users/profile.html'
     model = User
     context_object_name = 'user'
+
 
 class UserProfileEdit(LoginRequiredMixin, UpdateView):
     template_name = 'users/profile_edit.html'

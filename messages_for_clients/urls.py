@@ -1,6 +1,6 @@
 from django.urls import path
 
-from messages_for_clients.views import *
+from messages_for_clients.views import MessagesListView, MessageCreate, MessageUpdateView, MessagesDeleteView
 
 app_name = 'messages_for_clients'
 
