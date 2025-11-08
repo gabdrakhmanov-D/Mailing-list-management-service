@@ -1,3 +1,4 @@
+![Contribution guidelines for this project](static/images/main.png)
 # <p align="center"> Курсовая работа: Сервис управления рассылками</p>
 
 ##  <p align="center">Техническое задание:</p>
