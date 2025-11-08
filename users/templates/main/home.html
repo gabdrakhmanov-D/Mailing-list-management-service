@@ -5,8 +5,7 @@
 
 {% block content %}
 
-<div class="row mt-5">
-    <div class="col-3">
+<div class="d-flex justify-content-center-sm">
         <table class="table table-hover text-center">
             <thead>
             <tr>
@@ -23,8 +22,7 @@
             </tr>
             </tbody>
         </table>
-    </div>
-</div>
+
 <div class="position-absolute top-50 start-50 translate-middle">
     <div class="btn-group-vertical" role="group" aria-label="Группа вертикальных кнопок">
         <a href="{% url 'clients:recipients' %}" class="btn btn-primary">Управление клиентами</a>
