@@ -19,7 +19,7 @@
 
 ##  <p align="center">Установка:</p>
 
-1. Клонируйте репозиторий: git@github.com:gabdrakhmanov-D/Mailing-list-management-service.git
+1. Клонируйте репозиторий.
 2. Обновите зависимости с помощью команды `poetry update`.
 
 ##  <p align="center">Запуск:</p>  
