@@ -1,3 +1,5 @@
+{% load custom_tags %}
+
 <header>
     <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-primary text-center">
         <div class="container-fluid">
@@ -32,10 +34,12 @@
                     <li class="nav-item"><a class="nav-link text-warning" href="{% url 'clients:add_recipient' %}">Добавить
                         получателя</a></li>
                     {% elif 'messages' in request.path_info %}
-                    <li class="nav-item"><a class="nav-link text-warning" href="{% url 'messages:add_message' %}">Добавить сообщение</a>
+                    <li class="nav-item"><a class="nav-link text-warning" href="{% url 'messages:add_message' %}">Добавить
+                        сообщение</a>
                     </li>
                     {% elif 'statistics' or 'mailing_list' or 'start' in request.path_info %}
-                    <li class="nav-item"><a class="nav-link text-warning" href="{% url 'sender:add_mailing' %}">Добавить рассылку</a>
+                    <li class="nav-item"><a class="nav-link text-warning" href="{% url 'sender:add_mailing' %}">Добавить
+                        рассылку</a>
                     </li>
                     {% endif %}
                     {% endif %}
@@ -43,6 +47,10 @@
             </div>
             <form class="d-flex" method="post" action="{% url 'users:logout'%}">
                 {% csrf_token %}
+                {% if request.user|in_group:"Managers" %}
+                <span class="text-light mx-3">Менеджер: <a class="link text-light" href="{% url 'users:profile' %}">{{request.user|default:'Имя не указано'}}</a></span>
+                {% else %}
+                <a class="btn text-light" href="{% url 'users:profile' %}">{{request.user|default:'Имя не указано'}}</a>{% endif %}
                 <button type="submit" class="btn btn-danger ">Выйти</button>
             </form>
         </div>

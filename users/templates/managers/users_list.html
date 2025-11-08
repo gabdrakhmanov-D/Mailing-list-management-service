@@ -10,8 +10,7 @@
         <th scope="col">Электронная почта</th>
         <th scope="col">Логин</th>
         <th scope="col">ФИО</th>
-        <th scope="col">Номер телефона</th>
-        <th scope="col"></th>
+        <th scope="col">Действие</th>
     </tr>
     </thead>
     <tbody>
@@ -22,20 +21,15 @@
         <td>{{ user.email }}</td>
         <td>{{ user.login|default:"Логин не указан" }}</td>
         <td>{{ user.last_name }} {{ user.first_name }}</td>
-        <td>{{ user.is_active }}</td>
         <td>
-            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-                Действие
-            </button>
-            <ul class="dropdown-menu">
-                {% if user.is_active %}
-                <li><a class="dropdown-item" href="{% url 'users:disable_user' user.pk %}">Блокировать</a></li>
-                {% else %}
-                <li><a class="dropdown-item" href="{% url 'users:unlock_user' user.pk %}">Разблокировать</a></li>
-                {% endif %}
-            </ul>
+            {% if user.is_active %}
+            <a class="btn btn-danger" href="{% url 'users:disable_user' user.pk %}">Блокировать</a>
+            {% else %}
+            <a class="btn btn-success" href="{% url 'users:unlock_user' user.pk %}">Разблокировать</a>
+            {% endif %}
         </td>
     </tr>
+
     {% endif %}
     {% endfor %}
     </tbody>

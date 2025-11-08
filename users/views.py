@@ -15,7 +15,6 @@ from users.forms import UserRegisterForm, UserSettingUpLoginForm, UserSettingUpP
 from users.models import User
 
 
-@method_decorator(cache_page(60 * 2), name='dispatch')
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'main/home.html'
 
@@ -52,11 +51,7 @@ class UserProfileEdit(LoginRequiredMixin, UpdateView):
     template_name = 'users/profile_edit.html'
     form_class = UserSettingUpProfile
     model = User
-
-    def form_valid(self, form):
-        page = self.get_context_data()['object'].pk
-        self.success_url = reverse_lazy("users:profile", kwargs={'pk': page})
-        return super().form_valid(form)
+    success_url = reverse_lazy("users:profile")
 
 
 class UserPasswordChange(PasswordChangeView):
@@ -75,7 +70,6 @@ class UserPasswordChangeDone(PasswordChangeDoneView):
     extra_context = {'psw_change_done': 'Вы успешно изменили пароль.'}
 
 
-@method_decorator(cache_page(60 * 2), name='dispatch')
 class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = User
     template_name = 'managers/users_list.html'
