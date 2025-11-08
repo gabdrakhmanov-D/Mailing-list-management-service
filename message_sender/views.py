@@ -49,7 +49,7 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
 
     def get(self, *args, **kwargs):
         context = super().get(kwargs, args)
-        if self.request.user != self.object.owner and not self.request.user.has_perm('message_sender.can_view_all_mailings'):
+        if self.request.user != self.object.owner:
             return HttpResponseForbidden("У вас нет доступа для редактирования этой записи.")
         return context
 
@@ -61,7 +61,7 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
 
     def get(self, *args, **kwargs):
         context = super().get(kwargs, args)
-        if self.request.user != self.object.owner and not self.request.user.has_perm('message_sender.can_view_all_mailings'):
+        if self.request.user != self.object.owner:
             return HttpResponseForbidden("У вас нет доступа для удаления этой записи.")
         return context
 

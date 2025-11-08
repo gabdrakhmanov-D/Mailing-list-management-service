@@ -42,7 +42,7 @@ class RecipientUpdateView(LoginRequiredMixin, UpdateView):
 
     def get(self, *args, **kwargs):
         context = super().get(kwargs, args)
-        if self.request.user != self.object.owner and not self.request.user.has_perm('clients.can_view_all_clients'):
+        if self.request.user != self.object.owner:
             return HttpResponseForbidden("У вас нет доступа для редактирования этой записи.")
         return context
 
@@ -54,6 +54,6 @@ class RecipientDeleteView(LoginRequiredMixin, DeleteView):
 
     def get(self, *args, **kwargs):
         context = super().get(kwargs, args)
-        if self.request.user != self.object.owner and not self.request.user.has_perm('clients.can_view_all_clients'):
+        if self.request.user != self.object.owner:
             return HttpResponseForbidden("У вас нет доступа для удаления этой записи.")
         return context
