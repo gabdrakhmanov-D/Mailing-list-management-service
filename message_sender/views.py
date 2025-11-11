@@ -36,7 +36,7 @@ class MailingListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         if not self.request.user.has_perm('message_sender.can_view_all_mailings'):
-            queryset = get_mailings_from_cache().filter(owner=self.request.user, is_hidden=True)
+            queryset = get_mailings_from_cache().filter(owner=self.request.user, is_hidden=False)
             return queryset
         return get_mailings_from_cache()
 
@@ -139,7 +139,7 @@ def start_mailing(request, pk):
 @login_required
 @permission_required('message_sender.can_hide_mailing', raise_exception=True)
 def hide_mailing(request, mailing_id):
-    Mailing.objects.filter(pk=mailing_id).update(is_hidden=False)
+    Mailing.objects.filter(pk=mailing_id).update(is_hidden=True)
     Mailing.objects.filter(pk=mailing_id).update(status='completed')
     return redirect('sender:mailing')
 
@@ -147,5 +147,5 @@ def hide_mailing(request, mailing_id):
 @login_required
 @permission_required('message_sender.can_hide_mailing', raise_exception=True)
 def activ_mailing(request, mailing_id):
-    Mailing.objects.filter(pk=mailing_id).update(is_hidden=True)
+    Mailing.objects.filter(pk=mailing_id).update(is_hidden=False)
     return redirect('sender:mailing')

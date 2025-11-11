@@ -42,7 +42,7 @@
                 <li><a class="dropdown-item" href="{% url 'sender:edit_mailing' mail.pk %}">Редактировать</a></li>
                 <li><a class="dropdown-item " href="{% url 'sender:mailing_delete' mail.pk %} " >Удалить</a></li>
                 {% if perms.message_sender.can_hide_mailing %}
-                {% if mail.is_hidden %}
+                {% if not mail.is_hidden %}
                 <li><a class="dropdown-item " href="{% url 'sender:hide' mail.pk %}">Завершить и скрыть</a></li>
                 {% else %}
                 <li><a class="dropdown-item " href="{% url 'sender:activ' mail.pk %}">Сделать активной</a></li>
