@@ -1,3 +1,5 @@
+from email.policy import default
+
 from django.contrib.auth.models import Group, Permission
 from django.core.management import BaseCommand
 
@@ -5,9 +7,16 @@ from users.models import User
 
 
 class Command(BaseCommand):
-    help = 'Создание группы менеджеров: Managers, и добавление в нее тестового пользователя'
+    help = 'Создание группы менеджеров: Managers и, опционально, добавление в нее тестового пользователя.'
 
-    def handle(self, *args, **options):
+    def add_arguments(self, parser):
+        parser.add_argument('-u',
+                            '--user',
+                            action='store_true',
+                            help='Нужно добавить тестового пользователя или нет.')
+
+    def handle(self, *args, **kwargs):
+        create_user = kwargs['user']
         permissions_for_managers = ['can_view_all_clients',
                                     'can_view_all_mailings',
                                     'can_hide_mailing',
@@ -23,17 +32,18 @@ class Command(BaseCommand):
                 self.stdout.write(
                     self.style.SUCCESS(f'В группу "Managers" добавлено разрешение: {perm.name}'))
 
-        user = self._create_user()
+        if create_user:
+            user = self._create_user()
 
-        try:
-            user.groups.add(managers_group)
-            self.stdout.write(
-                self.style.SUCCESS(
-                    f'Пользователь добавлен в группу "Менеджеры"\nemail для входа: {user.email}\nпароль: 1234'
+            try:
+                user.groups.add(managers_group)
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f'Тестовый пользователь создан и добавлен в группу "Менеджеры"\nemail для входа: {user.email}\nпароль: 1234'
+                    )
                 )
-            )
-        except Exception as e:
-            self.stdout.write(self.style.DANGER(f'Ошибка создания пользователя: {e}'))
+            except Exception as e:
+                self.stdout.write(self.style.DANGER(f'Ошибка создания пользователя: {e}'))
 
     @staticmethod
     def _create_user():
