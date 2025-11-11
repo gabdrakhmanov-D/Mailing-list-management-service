@@ -46,13 +46,15 @@
                 </ul>
             </div>
             <form class="d-flex" method="post" action="{% url 'users:logout'%}">
+
                 {% csrf_token %}
                 {% if request.user|in_group:"Managers" %}
-                <span class="text-light mx-3">Менеджер: <a class="link text-light" href="{% url 'users:profile' %}">{{request.user|default:'Имя не указано'}}</a></span>
+                <span class="text-light mx-3">Менеджер: <a class="link text-light" href="{% url 'users:profile' %}">{{request.user.name|default:'Имя не указано'}}</a></span>
                 {% else %}
-                <a class="btn text-light" href="{% url 'users:profile' %}">{{request.user|default:'Имя не указано'}}</a>{% endif %}
+                <a class="btn text-light" href="{% url 'users:profile' %}">{{request.user.name|default:'Имя не указано'}}</a>{% endif %}
                 <button type="submit" class="btn btn-danger ">Выйти</button>
             </form>
         </div>
     </nav>
+
 </header>
