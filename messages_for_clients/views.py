@@ -17,6 +17,9 @@ class MessageCreate(LoginRequiredMixin, CreateView):
     template_name = 'messages_for_clients/message_form.html'
     success_url = reverse_lazy('messages:messages_list')
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 @method_decorator(cache_page(60 * 2), name='dispatch')
 class MessagesListView(LoginRequiredMixin, ListView):
