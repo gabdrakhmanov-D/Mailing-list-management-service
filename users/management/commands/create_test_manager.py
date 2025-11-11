@@ -6,7 +6,7 @@ from users.models import User
 
 class Command(BaseCommand):
 
-    help = 'Создание тестового менеджера. Обязательное указание через пробел: email username password.'
+    help = 'Создание тестового менеджера. Обязательно указать через пробел: email username password.'
 
     def add_arguments(self, parser):
         parser.add_argument('email',
