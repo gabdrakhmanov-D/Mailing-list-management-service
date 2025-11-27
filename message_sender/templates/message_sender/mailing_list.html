@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Список получателей{% endblock %}
+
+{% block content %}
+<table class="table table-success table-striped table-hover text-center">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Дата и время первой отправки</th>
+        <th scope="col">Дата и время окончания отправки</th>
+        <th scope="col">Статус рассылки</th>
+        <th scope="col">Сообщение</th>
+        <th scope="col">Получатели</th>
+        {% if perms.message_sender.can_view_all_mailings %}
+        <th scope="col">Рассылка активна</th>
+        {% endif %}
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for mail in mailing %}
+    <tr>
+        <th scope="row">{{ mail.pk }}</th>
+        <td>{{ mail.start_date }}</td>
+        <td>{{ mail.end_date }}</td>
+        <td>{{ mail.status }}</td>
+        <td>{{ mail.message }}</td>
+        <td>
+            {% for recipient in mail.recipients.all %}<ul class="nav nav-tabs" role="tablist">
+            <li>
+                {{ recipient.fullname }}</li></ul>{% endfor %}</td>
+        {% if perms.message_sender.can_view_all_mailings %}
+        <th scope="col">{{ mail.is_hidden }}</th>
+        {% endif %}
+        <td>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                Действие
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'sender:start' mail.pk %}">Запустить</a></li>
+                <li><a class="dropdown-item" href="{% url 'sender:edit_mailing' mail.pk %}">Редактировать</a></li>
+                <li><a class="dropdown-item " href="{% url 'sender:mailing_delete' mail.pk %} " >Удалить</a></li>
+                {% if perms.message_sender.can_hide_mailing %}
+                {% if not mail.is_hidden %}
+                <li><a class="dropdown-item " href="{% url 'sender:hide' mail.pk %}">Завершить и скрыть</a></li>
+                {% else %}
+                <li><a class="dropdown-item " href="{% url 'sender:activ' mail.pk %}">Сделать активной</a></li>
+                {% endif %}
+                {% endif %}
+            </ul>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if mailing_status %}
+<div class="row text-center">
+<h5>{{ mailing_status }}</h5></div>
+{% endif %}
+{% endblock %}

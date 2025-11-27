@@ -1,0 +1,42 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+
+{% block content %}
+
+<div class="d-flex justify-content-center-sm">
+        <table class="table table-hover text-center">
+            <thead>
+            <tr>
+                <th scope="col" class="table-primary">Количество всех рассылок</th>
+                <th scope="col" class="table-success">Количество активных рассылок (со статусом'Запущена')</th>
+                <th scope="col" class="table-danger">Количество уникальных получателей</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row" class="table-primary">{{ mailing_count }}</th>
+                <td class="table-success">{{ activ_mailing }}</td>
+                <td class="table-danger">{{ uniq_client_count }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+<div class="position-absolute top-50 start-50 translate-middle">
+    <div class="btn-group-vertical" role="group" aria-label="Группа вертикальных кнопок">
+        <a href="{% url 'clients:recipients' %}" class="btn btn-primary">Управление клиентами</a>
+        <p></p>
+        <a href="{% url 'messages:messages_list' %}" class="btn btn-primary">Управление сообщениями</a>
+        <p></p>
+        <a href="{% url 'sender:mailing' %}" class="btn btn-primary">Управление рассылками</a>
+        {% if perms.users.can_view_list_users %}
+        <p></p>
+        <a href="{% url 'users:mngr_page' %}" class="btn btn-primary">Управление пользователями</a>
+        {% endif %}
+    </div>
+</div>
+{% if psw_change_done %}
+<h1>Пароль изменен</h1>
+{% endif %}
+{% endblock %}

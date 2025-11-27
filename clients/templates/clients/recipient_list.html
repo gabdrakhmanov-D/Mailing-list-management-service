@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Список получателей{% endblock %}
+
+{% block content %}
+
+<table class="table table-success table-striped table-hover text-center">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">email</th>
+        <th scope="col">ФИО</th>
+        <th scope="col">Комментарий</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for recipient in recipients %}
+    <tr>
+        <th scope="row">{{ recipient.pk }}</th>
+        <td>{{ recipient.email }}</td>
+        <td>{{ recipient.fullname }}</td>
+        <td>{{ recipient.comment }}</td>
+        <td>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                Действие
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'clients:edit_recipient' recipient.pk %}">Редактировать</a></li>
+                <li><a class="dropdown-item" href="{% url 'clients:recipient_delete' recipient.pk %}" >Удалить</a></li>
+            </ul>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

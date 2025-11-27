@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{user.first_name}} {{user.last_name}}{% endblock %}
+
+{% block head %}
+{{ user.first_name }} {{ user.last_name }}
+{% endblock %}
+
+{% block content %}
+<div class="position-absolute top-50 start-50 translate-middle-x">
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            {% if user.avatar %}
+            <img src="{{ user.avatar }}"
+                 class="card-img-top img-fluid position-relative top-50 start-50 translate-middle"
+                 alt="{{user.first_name}} {{user.last_name}}">
+            {% else %}
+            {% load static %}
+            <img src="{% static 'images/icon-profile.png' %}"
+                 class="object-fit-sm-contain border rounded img-fluid position-relative top-50 start-50 translate-middle"
+                 alt="{{user.first_name}} {{user.last_name}}" height="335">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">{{ user.first_name }} {{ user.last_name }}</h5>
+                <p class="card-text">Какая, то информация о сотруднике</p>
+            </div>
+        </div>
+        <div class="d-grid col mx-auto">
+            <div class="card-footer text-center">
+                <a class="btn btn-danger" href="{% url 'users:edit_profile' user.pk %}">Изменить</a>
+                 </div>
+             </div>
+    </div>
+</div>
+    </div>
+
+{% endblock %}
