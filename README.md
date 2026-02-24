@@ -32,7 +32,7 @@
 
 1. **Клонируйте репозиторий и установите зависимости:**
    ```bash
-   git clone https://github.com
+   git clone https://github.com/Miles-Bennett-Dyson/Mailing-list-management-service
    cd mailing-service
    poetry update
 
